@@ -7,10 +7,6 @@ from pyramid.events import NewRequest
 
 from wf_blog import routers
 
-def set_views(config):
-    from wf_blog.views.views import *
-    config.add_view(index, route_name='login', renderer='base.html')
-
 def main(global_config, **settings):
     """ This function returns a WSGI application.
     """
@@ -28,7 +24,8 @@ def main(global_config, **settings):
     config = Configurator(session_factory=session_factory,
                           authentication_policy=SessionAuthenticationPolicy(prefix='auth', callback=auth),
                           authorization_policy=ACLAuthorizationPolicy(),
-                          settings=settings)
+                          settings=settings,
+                          )
 
     # jinja2
     from pyramid_jinja2 import renderer_factory
@@ -38,8 +35,7 @@ def main(global_config, **settings):
 
     # set routers and views
     routers.includeme(config)
-    set_views(config)
-    # config.scan('wf_blog')
+    config.scan("wf_blog.views")
 
     # MongoDB
     def add_mongo_db(event):
@@ -53,7 +49,6 @@ def main(global_config, **settings):
     conn = MongoDB(db_uri)
     config.registry.settings['mongodb_conn'] = conn
     config.add_subscriber(add_mongo_db, NewRequest)
-    config.scan('wf_blog')
 
     if 'pyramid_debugtoolbar' in set(settings.values()):
         class MongoDB(pymongo.Connection):

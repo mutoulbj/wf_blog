@@ -1,0 +1,576 @@
+{% extends 'base.html' %}
+
+{% block title %}首页{% endblock title %}
+
+{% block extend_head %}
+    <style type="text/css">
+        [class^="icon-"]:before,
+        [class*=" icon-"]:before {
+        /*  font-family: 'fontello';*/
+          font-style: normal;
+          font-weight: normal;
+          speak: none;
+          display: inline-block;
+          text-decoration: inherit;
+          width: 1em;
+          margin-right: 0.2em;
+          text-align: center;
+          opacity: 0.8;
+        /* fix buttons height, for twitter bootstrap */
+          line-height: 1em;
+        /* Animation center compensation - magrins should be symmetric */
+        /* remove if not needed */
+          margin-left: 0.2em;
+        /* you can be more comfortable with increased icons size */
+        /* font-size: 120%; */
+        /* Uncomment for 3D effect */
+        /* text-shadow: 1px 1px 1px rgba(127, 127, 127, 0.3); */
+        }
+
+        * {
+        	 -webkit-box-sizing: border-box;
+        	-moz-box-sizing:border-box;
+        	box-sizing:border-box;
+        }
+
+        div#timeline_container {
+        	width:960px;
+        	margin:40px auto;
+        	position:relative;
+        }
+        div#timeline_container header {
+        	position:relative;
+        	z-index:20;
+        }
+        div#timeline_container header figure {
+        	width:200px;
+        	height:200px;
+        	border-radius:50%;
+        	border:5px solid #cdc9c6;
+        	overflow:hidden;
+        	display:block;
+        	margin:0 auto;
+        }
+        div#timeline_container header figure img {
+        	height:100%;
+        }
+        div#timeline_container header h1 {
+        	position:absolute;
+        	top:20px;
+        	right:80px;
+        	font-family: 'Lobster', cursive;
+        	font-size:2.8em;
+        	text-shadow:2px 2px 1px #fff;
+        	font-weight:normal;
+        }
+        div#timeline_container > ul {
+        	position:relative;
+        	width:4px;
+        	background:#cdc9c6;
+        	border-right:1px solid white;
+        	margin:0 auto;
+        	padding:6em 0 0;
+        	list-style:none;
+        }
+        div#timeline_container > ul:after {
+        	content:"";
+        	width:15px;
+        	height:15px;
+        	border-radius:50%;
+        	background:#cdc9c6;
+        	box-shadow:1px 1px 1px white;
+        	position:absolute;
+        	bottom:0;
+        	left:-6px;
+        }
+        div#timeline_container > ul > li {
+        	position:relative;
+        	padding:.3em 0;
+        	min-height:230px;
+        	cursor:pointer;
+
+        	-webkit-transition:all 0.3s ease-out;
+        	-moz-transition:all 0.3s ease-out;
+        	-o-transition:all 0.3s ease-out;
+        	transition:all 0.3s ease-out;
+        }
+        div#timeline_container > ul > li.hidden {
+        	position:absolute;
+        	top:-500px;
+        }
+        div#timeline_container > ul > li div {
+        	position:absolute;
+        }
+        div#timeline_container > ul li > div.event_icn {
+        	padding:0.8em;
+        	font-size:1.7em;
+        	border-radius:50%;
+        	background:#ebe7e4;
+        	border:3px solid #cdc9c6;
+        	margin-left:-22px;
+        	color:rgba(85,86,86,0.3);
+        	box-shadow:1px 1px 1px white;
+
+        	-webkit-transition:all 0.3s ease-in-out;
+        	-moz-transition:all 0.3s ease-in-out;
+        	-o-transition:all 0.3s ease-in-out;
+        	transition:all 0.3s ease-in-out;
+        }
+
+        div#timeline_container > ul > li:hover div.event_icn,div#timeline_container > ul li.active div.event_icn{color:white;}
+
+        div#timeline_container > ul > li.event div.event_icn { background:#bde3e7;}
+        div#timeline_container > ul li.event:hover div.event_icn,div#timeline_container > ul li.event.active div.event_icn {background:#0ED1E7}
+
+
+
+
+        div#timeline_container > ul > li div.event_content {
+        	width:400px;
+        	padding:1em 2em 1.3em;
+        	border:1px solid #DDDBDA;
+        	border-radius:10px;
+        	top:-2em;
+        	opacity:0.3;
+        	background:white;
+        	-webkit-transition:all 0.3s ease-in-out;
+        	-moz-transition:all 0.3s ease-in-out;
+        	-o-transition:all 0.3s ease-in-out;
+        	transition:all 0.3s ease-in-out;
+        }
+        div#timeline_container > ul > li div.event_content a{color:#999;}
+
+        div#timeline_container > ul > li:hover div.event_content,div#timeline_container > ul li.active div.event_content {
+        	opacity:1;
+        }
+        div#timeline_container > ul > li:nth-child(odd) div.event_content {
+        	right:-470px;
+        }
+        div#timeline_container > ul > li:nth-child(even) div.event_content {
+        	left:-470px;
+        	text-align:right
+        }
+        div#timeline_container > ul > li div.event_content:before {
+        	content:"";
+        	position:absolute;
+        	width:20px;
+        	height:20px;
+        	border-bottom:1px solid #DDDBDA;
+        	border-left:1px solid #DDDBDA;
+        	top:3em;
+        	background:#ebe7e4;
+        	margin-top:8px;
+        	background:white;
+        }
+
+
+        div#timeline_container > ul > li:nth-child(odd) div.event_content:before {
+        	left:-11px;
+        	-webkit-transform: rotate(45deg);
+        	-moz-transform: rotate(45deg);
+        	-ms-transform: rotate(45deg);
+        	-o-transform: rotate(45deg);
+        	transform: rotate(45deg);
+        }
+        div#timeline_container > ul > li:nth-child(even) div.event_content:before {
+        	right:-11px;
+        	-webkit-transform: rotate(225deg);
+        	-moz-transform: rotate(225deg);
+        	-ms-transform: rotate(225deg);
+        	-o-transform: rotate(225deg);
+        	transform: rotate(225deg);
+        }
+        div#timeline_container > ul > li div.event_content h2 {
+        	margin:0.3em 0;
+        	padding:0;
+        	text-transform:capitalize;
+        	font-size:1.4em;
+        }
+        div#timeline_container > ul > li div.event_content p {
+        	margin:0;
+        	padding:0;
+        	line-height:1.5em;
+        }
+        div#timeline_container > ul > li div.event_content ul {
+        	margin:0;
+        	padding:0;
+        	list-style:none;
+        	line-height:1.5em;
+        }
+
+        div#timeline_container > ul > li div.event_date {
+        	top:1em;
+        	width:180px;
+        	text-align:right;
+        	font-size:1.2em;
+        	text-shadow:1px 1px 1px white;
+        	opacity:0.3;
+        	font-weight:bold;
+        	-webkit-transition:all 0.3s ease-in-out;
+        	-moz-transition:all 0.3s ease-in-out;
+        	-o-transition:all 0.3s ease-in-out;
+        	transition:all 0.3s ease-in-out;
+        }
+        div#timeline_container > ul > li:nth-child(even) div.event_date {text-align:left;}
+
+        div#timeline_container > ul > li:hover div.event_date,div#timeline_container > ul li.active div.event_date {opacity:0.9;}
+        div#timeline_container > ul > li:nth-child(odd) div.event_date {right:60px;}
+        div#timeline_container > ul > li:nth-child(even) div.event_date {left:60px;}
+
+        div#instructions_container {
+        	position:fixed;
+        	padding:2em;
+        	width:300px;
+        	bottom:2em;
+        	right:2em;
+        	line-height:1.4em;
+        	background:#FDFDBD;
+        	border-radius:10px;
+        	border:1px solid #DDDBDA;
+        	z-index:40;
+        	font-size:0.9em;
+        	color:black;
+        	line-height:1.6em;
+        }
+        div#info_container{
+        	position:fixed;
+        	bottom:2em;
+        	right:2em;
+        	border-radius:50%;
+        	color:#ebe7e4;
+        	background:#6d6b6a;
+        	opacity:0.3;
+        	cursor:pointer;
+        	width:22px;
+        	font-size:14px;
+        	height:22px;
+        	padding-top:2px;
+        	text-align:center;
+        	font-family:'lobster','cursive';
+        	display:none;
+        }
+        div#info_container:hover {
+        	opacity:0.9;
+        }
+        footer {
+        	width:960px;
+        	margin:2em auto;
+        	color:#999;
+        }
+        footer a {
+        	color:#444;
+        }
+        footer a.icon-down-circled {
+        	text-decoration:none;
+        }
+    </style>
+
+    <script type="text/javascript">
+        $(document).on('scroll',function(){
+        	$('div#instructions_container').fadeOut('fast');
+        	$('div#info_container').fadeIn('fast');
+        });
+        $(document).on('click','div#info_container',function(){
+        	$('div#instructions_container').fadeIn('fast');
+        	$('div#info_container').fadeOut('fast');
+        });
+
+        $(document).on('click','li.icon-down-open',function(){
+        	scrollToNext();
+        });
+
+        $(document).on('click','li.icon-up-open',function(){
+        	scrollToPrev();
+        });
+
+        $(document).on('keypress',function(e){
+        	if(e.which==106) {
+        		scrollToNext();
+        	} else if(e.which==107) {
+        		scrollToPrev();
+        	}
+        });
+
+        $('div#timeline_container').on('click','li', function(){
+        	showNext($(this));
+        });
+
+        function showNext(li){
+        	var $itms=$('div#timeline_container li');
+        	$itms.removeClass('active');
+        	$(li).addClass('active');
+        	$('html,body').stop().animate({ scrollTop: $(li).offset().top-$(li).height()}, 500,function(){
+        		$('html,body').stop();
+        	});
+        }
+
+        function scrollToNext() {
+        	var $itms=$('div#timeline_container > ul > li');
+        	var $current=$itms.index($('div#timeline_container li.active'));
+
+        	if ($($itms[$current+1]).length>0 && !$($itms[$current+1]).hasClass('hidden')) {
+        		$itms.removeClass('active');
+        		$($itms[$current+1]).addClass('active');
+        		$('html,body').stop().animate({ scrollTop: $($itms[$current+1]).offset().top-$($itms[$current+1]).height()}, 500);
+        	} else {
+        		$('html,body').stop().animate({ scrollTop: $(document).height()}, 500);
+        	}
+        }
+        function scrollToPrev() {
+        	var $itms=$('div#timeline_container > ul > li');
+        	var $current=$itms.index($('div#timeline_container li.active'));
+
+        	if ($($itms[$current-1]).length>0 && !$($itms[$current-1]).hasClass('hidden')) {
+        		$itms.removeClass('active');
+        		$($itms[$current-1]).addClass('active');
+        		$('html,body').stop().animate({ scrollTop: $($itms[$current-1]).offset().top-$($itms[$current-1]).height()}, 500);
+        	} else {
+        		$('html,body').stop().animate({ scrollTop: 0}, 500);
+        	}
+        }
+    </script>
+{% endblock extend_head %}
+
+{% block main %}
+    <div id="instructions_container">
+    	使用 'J' 和 'K' 键来跳转时间线.
+    </div><!-- of #instructions_container -->
+    <div id="timeline_container">
+    	<header>
+    		<figure>
+    			<img src="https://fbcdn-sphotos-h-a.akamaihd.net/hphotos-ak-snc7/300646_10150372857038898_914901400_n.jpg" title="The man" alt="Nicolas Slatiner"/>
+    		</figure>
+            <h1>吴凡 <br/> @巫小喵</h1>
+    	</header>
+        <!-- timeline start -->
+    	<ul>
+    		<li class="event">
+    			<div class="event_icn"></div>
+    			<div class="event_content">
+    				<h2>The journey begins</h2>
+    				<p>
+    					At 6:32am, a healthy baby boy is born in Buenos Aires, Argentina.
+    				</p>
+    			</div>
+    			<div class="event_date">
+    				25/07/1982
+    			</div>
+    		</li>
+    		<li class="event">
+    			<div class="event_icn"></div>
+    			<div class="event_content">
+    				<h2>Learning to code</h2>
+    				<p>
+    					Got my first PC for my 13<sup>th</sup> birthday.
+    				</p>
+    			</div>
+    			<div class="event_date">
+    				25/07/1995
+    			</div>
+    		</li>
+    		<li class="event">
+    			<div class="event_icn"></div>
+    			<div class="event_content">
+    				<h2>Markup and little wheels</h2>
+    				<p>
+    					Joined the science class in Ohel Shem High school, with emphasis on Computer Science and Robotics. There I built the school's first site in HTML and a little robot that extinguishes a small candle.
+    				</p>
+    			</div>
+    			<div class="event_date">
+    				01/09/1997
+    			</div>
+    		</li>
+    		<li class="event">
+    			<div class="event_icn"></div>
+    			<div class="event_content">
+    				<h2>10-4</h2>
+    				<p>
+    					Recruited to the IDF (Israeli Defense Force). There I learned how to command a tank and a platoon's medical department.
+    				</p>
+    			</div>
+    			<div class="event_date">
+    				07/2000 - 07/2003
+    			</div>
+    		</li>
+    		<li class="event">
+    			<div class="event_icn"></div>
+    			<div class="event_content">
+    				<h2>Nature Creation</h2>
+    				<p>
+    					Retail marketing intern of Nature Creation®, Chicago USA. <br/>in charge of sales.
+    				</p>
+    			</div>
+    			<div class="event_date">
+    				09/2004 - 02/2005
+    			</div>
+    		</li>
+    		<li class="event">
+    			<div class="event_icn"></div>
+    			<div class="event_content">
+    				<h2>See the world</h2>
+    				<p>
+    					Bought a good pair of hiking shoes and decided to travel through South America. Met my future wife on a beautiful beach in north-east Brasil.
+    				</p>
+    			</div>
+    			<div class="event_date">
+    				02/2005 - 09/2005
+    			</div>
+    		</li>
+    		<li class="event">
+    			<div class="event_icn"></div>
+    			<div class="event_content">
+    				<h2>Partner Comunications</h2>
+    				<p>
+    					Data department team manager at Partner Comunications, Israel. Responsible for a team of 20 people, VIP client liaison, Software Q&A.
+    				</p>
+    			</div>
+    			<div class="event_date">
+    				09/2005 - 08/2008
+    			</div>
+    		</li>
+    		<li class="event">
+    			<div class="event_icn"></div>
+    			<div class="event_content">
+    				<h2>Higher learning</h2>
+    				<p>
+    					Communication and administration studies at the Open University of Isreal.
+    				</p>
+    			</div>
+    			<div class="event_date">
+    				09/2005 - 07/2008
+    			</div>
+    		</li>
+    		<li class="event">
+    			<div class="event_icn"></div>
+    			<div class="event_content">
+    				<h2>See the world #2</h2>
+    				<p>
+    					The 'traveling bug' is rooted deep in me. Traveled through India and Nepal.
+    				</p>
+    			</div>
+    			<div class="event_date">
+    				08/2008 - 12/2008
+    			</div>
+    		</li>
+    		<li class="event">
+    			<div class="event_icn"></div>
+    			<div class="event_content">
+    				<h2>Home is where the heart is</h2>
+    				<p>
+    					Gathered some nerve and decided to move to Brasil for romantic related reasons.
+    				</p>
+    			</div>
+    			<div class="event_date">
+    				28/12/2008
+    			</div>
+    		</li>
+    		<li class="event">
+    			<div class="event_icn"></div>
+    			<div class="event_content">
+    				<h2>Web mastery</h2>
+    				<p>
+    					Web master course with emphasis on development at WebBH, Belo Horizonte, MG, Brasil.
+    				</p>
+    			</div>
+    			<div class="event_date">
+    				05/2009-02/2011
+    			</div>
+    		</li>
+    		<li class="event">
+    			<div class="event_icn"></div>
+    			<div class="event_content">
+    				<h2>Oliver art bar</h2>
+    				<p>
+    					Founded and managed the Oliver Art Bar, in Belo Horizonte, MG, Brasil, where I was responsible over a team of 8 and a lot of beer.
+    				</p>
+    			</div>
+    			<div class="event_date">
+    				07/2009 - 01/2011
+    			</div>
+    		</li>
+    		<li class="event">
+    			<div class="event_icn"></div>
+    			<div class="event_content">
+    				<h2>Freelance Developer</h2>
+    				<p>
+    					Got my first paying web job. Developing templates for Revolutions, Israel.
+    				</p>
+    			</div>
+    			<div class="event_date">
+    				08/2009
+    			</div>
+    		</li>
+    		<li class="event">
+    			<div class="event_icn"></div>
+    			<div class="event_content">
+    				<h2>Love is all you need.</h2>
+    				<p>
+    					Married the love of my life.
+    				</p>
+    			</div>
+    			<div class="event_date">
+    				28/05/2010
+    			</div>
+    		</li>
+    		<li class="event">
+    			<div class="event_icn"></div>
+    			<div class="event_content">
+    				<h2>Front end developer</h2>
+    				<p>
+    					Joined Domínio Público Comunicação. An advertising agency in Belo Horizonte, MG, Brasil.
+    				</p>
+    			</div>
+    			<div class="event_date">
+    				04/2011 - Today
+    			</div>
+    		</li>
+
+    		<li class="event">
+    			<div class="event_icn"></div>
+    			<div class="event_content">
+    				<h2>Virtual Identities</h2>
+    				<ul>
+    					<li><a href="http://www.facebook.com/slatiner" target="_blank">Facebook</a></li>
+    					<li><a href="http://br.linkedin.com/pub/nicolas-slatiner/45/610/385/en" target="_blank">LinkedIn</a></li>
+    					<li><a href="http://be.net/slatiner/frame" target="_blank" >Behance</a></li>
+    					<li><a href="http://codepen.io/slatiner" target="_blank">Codepen</a></li>
+    				</ul>
+    			</div>
+    			<div class="event_date">
+    			</div>
+    		</li>
+    		<li class="event">
+    			<div class="event_icn"></div>
+    			<div class="event_content">
+    				<h2>Additional information</h2>
+    				<ul>
+    					<li>Civil status: Married</li>
+    					<li>Nationalities: Argentinian, Israel</li>
+    					<li>Residency: Brazilian</li>
+    					<li>Languages: English, Portuguese, Spanish, Hebrew</li>
+    				</ul>
+    			</div>
+    			<div class="event_date">
+    			</div>
+    		</li>
+    		<li class="event">
+    			<div class="event_icn"></div>
+    			<div class="event_content">
+    				<h2>Contact Information</h2>
+    				<ul>
+    					<li>Phone: +55 31 8816-5008</li>
+    					<li>Address: R.Espanha, 571, Sabará - MG, 34590-340, Brazil</li>
+    					<li>E-mail: <a href="mailto:nslatiner@gmail.com" target="_blank">nslatiner@gmail.com</a></li>
+    				</ul>
+    			</div>
+    			<div class="event_date">
+    			</div>
+    		</li>
+    	</ul>
+    </div><!-- of #timeline_container -->
+
+
+<div id="info_container">
+		i
+</div><!-- of #info_container -->
+{% endblock main %}
