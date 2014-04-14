@@ -21,7 +21,7 @@
                 </a>
 
                 <ul class="uk-navbar-nav uk-hidden-small">
-                    <li><a href="/login"><i class="uk-icon-ke"></i>Admin</a></li>
+                    <li><a href="/admin/login"><i class="uk-icon-ke"></i>Admin</a></li>
                 </ul>
 
                 <a href="#tm-offcanvas" class="uk-navbar-toggle uk-visible-small" data-uk-offcanvas></a>
@@ -32,5 +32,6 @@
         </nav>
         {% block main %}
         {% endblock main %}
+        {% block extend_foot %}{% endblock extend_foot %}
     </body>
 </html>
