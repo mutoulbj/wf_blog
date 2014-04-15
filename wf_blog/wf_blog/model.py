@@ -25,6 +25,10 @@ class User(object):
         {'$set': {'password': encrypt(password)}}
         )
 
+    @staticmethod
+    @safe_mongocall
+    def get_user(mongodb, username):
+        return mongodb['user_user'].find_one({'username': username})
 
 class Post(object):
     """

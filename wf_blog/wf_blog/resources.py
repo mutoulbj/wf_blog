@@ -6,7 +6,8 @@ class Root(object):
     def __init__(self, context, request, ):
         self.request = request
         self.contect = context
-
+        if hasattr(self.request, 'mongodb'):
+            self.mongodb = self.request.mongodb
     def __call__(self):
         return {'context': self.context, 'request': self.request}
 
@@ -20,13 +21,3 @@ class Root(object):
         # elif key == 'tags':
         #     return Tags()
         return KeyError
-
-
-class Admin(object):
-    __parent__ = Root
-    __acl__ = [
-        (Allow, Authenticated, 'admin')
-    ]
-
-    def __init__(self):
-        pass

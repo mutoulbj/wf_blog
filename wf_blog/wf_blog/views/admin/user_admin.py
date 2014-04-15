@@ -1,13 +1,14 @@
-from wf_blog.heloer import encrypt
+# -*- coding: utf-8 -*-
+from wf_blog.helper import encrypt
+from wf_blog.model import User
 
 class UserAdmin(object):
     def __init__(self, username, request):
         self.settings = request.registry.settings
-        self.collection = request.mongodb['user_user']
-        self.__get_stored_encrypt(username)
+        self.__get_stored_encrypt(username, request)
 
-    def __get_stored_encrypt(self, username):
-        record = self.collection.find_one({'username': username})
+    def __get_stored_encrypt(self, username, request):
+        record = User.get_user(request.mongodb, username)
         if record:
             self.stored_encrypt = record['password']
         else:

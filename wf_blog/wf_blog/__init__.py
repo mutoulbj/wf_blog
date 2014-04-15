@@ -24,7 +24,7 @@ def main(global_config, **settings):
     config = Configurator(session_factory=session_factory,
                           authentication_policy=SessionAuthenticationPolicy(prefix='auth', callback=auth),
                           authorization_policy=ACLAuthorizationPolicy(),
-                          settings=settings,
+                          settings=settings
                           )
 
     # jinja2
@@ -43,7 +43,7 @@ def main(global_config, **settings):
         url = settings['mongodb.url']
         db_name = settings['mongodb.db_name']
         db = settings['mongodb_conn'][db_name]
-        event.request.db = db
+        event.request.mongodb = db
     db_uri = settings['mongodb.url']
     MongoDB = pymongo.Connection
     conn = MongoDB(db_uri)
