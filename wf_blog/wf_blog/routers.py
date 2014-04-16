@@ -8,10 +8,11 @@ def includeme(config):
 
 
 def admin_include(config):
-    config.add_route('index', '')
-    config.add_route('login', '/login')
-    config.add_route('login_post', '/login/post')
+    config.add_route('login', '/login', factory='wf_blog.security.PostFactory')
+    config.add_route('login_post', '/login/post', factory='wf_blog.security.PostFactory')
     config.add_route('logout', '/logout')
+    config.add_route('dashboard', '/dashboard')
+    config.add_route('new_post', '/new_post')
 
 
 def post_include(config):

@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+from pyramid.security import (Everyone, Authenticated, Allow, Deny, ALL_PERMISSIONS)
+
 from wf_blog.helper import encrypt
 from wf_blog.model import User
 

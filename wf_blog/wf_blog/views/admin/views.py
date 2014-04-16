@@ -25,16 +25,12 @@ class AdminView(Root):
     def login(self):
         return {}
 
-
     @view_config(renderer='json', route_name='login_post')
     def login_post(self):
         if self.request.method == 'POST':
-            print self.request, "====="
             username = self.request.POST['username']
             password = self.request.POST['password']
             admin_user = UserAdmin(username, self.request)
-            print admin_user
-            print
 
             if admin_user.validate_user(password):
                 headers = remember(self.request, username)
@@ -43,3 +39,14 @@ class AdminView(Root):
                 headers = forget(self.request)
         message = u"用户名或密码错误"
         return {'success': message, }
+
+    @view_config(renderer='/admin/dashboard.html', route_name='dashboard', permission='admin')
+    def dashboard(self):
+        return {}
+
+    @view_config(renderer='/admin/new_post.html', route_name='new_post')
+    def new_post(self):
+        return {}
+
+
+

@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block main %}
+    <div class="uk-width-3-10">
+        <div id="left" class="uk-panel uk-panel-box">
+            <h3 class="uk-panel-title">控制台</h3>
+            <ul class="uk-nav uk-nav-side">
+                <li><a href="#"><i class=""></i>新建</a></li>
+                <li>
+                    <a href="#"><i class=""></i>所有</a>
+                    <div>
+                        <ul class="uk-nav-sub">
+                            <li><a href="">分类</a></li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="uk-width-7-10">
+        <div id="right" class="uk-panel uk-panel-box">
+            {% block right_content %}{% endblock right_content %}
+        </div>
+    </div>
+{% endblock main %}

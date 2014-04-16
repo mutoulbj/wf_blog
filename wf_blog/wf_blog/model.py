@@ -3,6 +3,7 @@ import logging
 import pymongo
 from bson import ObjectId
 from datetime import datetime
+from pyramid.security import Allow, Everyone, Authenticated
 from wf_blog.mongodb import safe_mongocall
 from wf_blog.helper import encrypt
 
