@@ -1,0 +1,84 @@
+	*{padding:0;margin:0;}
+	  /*html{border-top:10px #1abf89 solid;}*/
+	  .artical_content{width:800px;margin:0 auto;padding:3% 20px 20px;font-family:Palatino, Optima, Georgia, serif;}
+	  @media all and (max-width:1024px){ body, pre a{width:60%;} }
+	  small{color:#999;}
+	  #toolbar{margin-bottom:1em;position:fixed;left:20px;margin-top:5px;}
+	  #toolbar [class^="icon-"]:before, #toolbar [class*=" icon-"]:before{font-family:'pen'}
+	  #mode{color:#1abf89;;cursor:pointer;}
+	  #mode.disabled{color:#666;}
+	  #mode:before{content: '\e813';}
+	  #hinted{color:#1abf89;cursor:pointer;}
+	  #hinted.disabled{color:#666;}
+	  #hinted:before{content: '\e816';}
+
+	  #fork{position:fixed;right:0;top:0;}
+	  
+	  /*
+	  When the webpage is printed
+	  this media query hides extra elements,
+	  and makes the text content fit the page.
+	  */
+	  @media print {
+	    #fork, #toolbar {
+	        display: none;
+	    }
+	    body {
+	        width: 94%;
+	        padding-top: 1em;
+	        font-size: 12px;
+	    }
+	    html {
+	        border-top: 0;
+	    }
+	  }
+
+	  .btn-set, .metabar .metabar-text {
+		margin: 10px;
+		line-height: 44px;
+		display: inline-block;
+		white-space: nowrap;
+		float: right;
+	}
+	.distraction-free-component {
+		-webkit-transition: opacity .3s linear;
+		-moz-transition: opacity .3s linear;
+		-ms-transition: opacity .3s linear;
+		-o-transition: opacity .3s linear;
+		transition: opacity .3s linear;
+		}
+    .btn-primary:hover {
+		color: #57ad68;
+		border-color: #57ad68;
+		}
+	.btn-primary {
+		color: #dededc;
+		border-color: #dededc;
+	}
+	.btn {
+		display: inline-block;
+		position: relative;
+		height: 38px;
+		line-height: 37px;
+		padding: 0 16px;
+		border: 0;
+		outline: 0;
+		color: #dededc;
+		background: rgba(0,0,0,0);
+		font-size: 14px;
+		text-align: center;
+		text-decoration: none;
+		cursor: pointer;
+		border: 1px solid #dededc;
+		vertical-align: bottom;
+		white-space: nowrap;
+		text-rendering: optimizeLegibility;
+
+		font-family: "jaf-bernino-sans","Lucida Grande","Lucida Sans Unicode","Lucida Sans",Geneva,Verdana,sans-serif;
+		letter-spacing: -0.02em;
+		font-weight: 400;
+		font-style: normal;
+		-webkit-border-radius: 999em;
+		-moz-border-radius: 999em;
+		border-radius: 999em;
+		}

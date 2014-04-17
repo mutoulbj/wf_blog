@@ -1,0 +1,37 @@
+{% extends "admin/admin_base.html" %}
+
+{% block title %}控制台{% endblock title %}
+
+{% block right_content %}
+	<table class="uk-table uk-table-hover uk-table-striped">
+	<thead>
+		<tr>
+			<th>标题</th>
+			<th>分类</th>
+			<th>时间</th>
+			<th>操作</th>
+		</tr>
+	</thead>
+	<tbody>
+	    {% for p in results %}
+		<tr>
+			<td><a href="/post/detail/{{ p._id }}">{{ p.title }}</a></td>
+			<td>{{ p.category }}</td>
+			<td>{{ p.add_time.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+			<td>
+				<button type="" class="uk-button uk-button-primary">修改</button>
+				<button type="" class="uk-button uk-button-danger">删除</button>
+			</td>
+		</tr>
+		{% endfor %}
+	</tbody>
+	</table>
+{% endblock right_content %}
+
+{% block extend_foot %}
+	<script type="text/javascript">
+	    $(document).ready(function(){
+	    	$("#admin_all").addClass("uk-active");
+	    })
+	</script>
+{% endblock %}

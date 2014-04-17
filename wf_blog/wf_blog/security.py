@@ -1,12 +1,9 @@
 # -*- coding: utf-8 -*-
 from pyramid.security import Allow, Everyone, Authenticated
+from wf_blog.model import User
 
-class PostFactory(object):
-    __acl__ =[
-        (Allow, Everyone, 'view'),
-        (Allow, Authenticated, 'add'),
-        (Allow, Authenticated, 'edit')
-    ]
-
-    def __init__(self):
-        pass
+def groupfinder(uid, request):
+	cur = User.get_user(request.mongodb, uid)
+	if cur:
+		return cur.get('group', [])
+	return []

@@ -1,26 +1,23 @@
 {% extends 'base.html' %}
 
-{% block title %}post title {% endblock title %}
+{% block title %}{{ post.title }}{% endblock title %}
+
+{% block extend_head %}
+<link rel="stylesheet" href="{{ request.static_url('wf_blog:static/pen/pen.css') }}" type="text/css">
+<link rel="stylesheet" href="{{ request.static_url('wf_blog:static/css/post.css') }}" type="text/css">
+{% endblock extend_head %}
 
 
 {% block main %}
-    <div class="uk-container uk-container-center uk-margin-top uk-margin-large-bottom">
-        <div class="uk-width-1-1">
-            <article class="uk-article">
-
-                <h1 class="uk-article-title">Article Heading</h1>
-
-                <p class="uk-article-meta">Written by Author on 12 April 2013. Posted in <a href="layouts_blog.html">Blog</a></p>
-
-                <p><img src="" width="900" height="300" alt=""></p>
-
-                <p>Lorem ipsum dolor sit amet, consectetur adipisici elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquid ex ea commodi consequat. Quis aute iure reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint obcaecat cupiditat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-
-                <h2>Subheading</h2>
-
-                <p>Lorem ipsum dolor sit amet, consectetur adipisici elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquid ex ea commodi consequat. Quis aute iure reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint obcaecat cupiditat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-            </article>
+    <div class="uk-width-1-1 artical_content">
+        <div data-toggle="pen">
+            <div class="info" style="float: right; vertical-align: middle">
+                <ul class="uk-list">
+                <li><i class="uk-icon-clock-o"></i>  {{ post.add_time.strftime('%Y-%m-%d %H:%M:%S') }}</li>
+                <li><i class="uk-icon-folder-o"></i>  {{ post.category }}</li>
+                </ul>
+            </div>
+            {{ post.content|safe }}
         </div>
-        
     </div>
 {% endblock main %}

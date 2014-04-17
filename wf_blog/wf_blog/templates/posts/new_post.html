@@ -1,0 +1,116 @@
+{% extends "base.html" %}
+
+{% block title %}新建文章{% endblock title %}
+
+{% block extend_head %}
+<link rel="stylesheet" href="{{ request.static_url('wf_blog:static/pen/pen.css') }}" type="text/css">
+<link rel="stylesheet" href="{{ request.static_url('wf_blog:static/css/post.css') }}" type="text/css">
+{% endblock %}
+{% block main %}
+<div class="btn-set distraction-free-component">
+	<!-- <button class="btn btn-delete" title="Delete" data-action="delete-post">Delete</button> -->
+	<button class="btn btn-primary btn-publish" title="Publish" data-action="publish" id="id_publish">
+	Publish
+	</button>
+</div>
+<div class="uk-width-1-1 artical_content">
+	<div id="toolbar">
+	  <span id="mode" class="icon-mode"></span>
+	  <span id="hinted" class="icon-pre disabled" title="Toggle Markdown Hints"></span>
+	</div>
+
+	<div data-toggle="pen" placeholder="im a placeholder" id="id_post_content">
+	  <h2 id="id_title">题目</h2>
+	  <hr>
+	  <p>正文。选择内容后可以进行格式化。自己探索吧。
+	  </p>
+	</div>
+</div>
+
+<div id="id_publish_modal" class="uk-modal">
+    <div class="uk-modal-dialog">
+        <a class="uk-modal-close uk-close"></a>
+        <h1>再次确认下信息吧</h1>
+        <form method="post" action="/post/new_post" class="uk-panel uk-panel-box uk-form" id="id_post_form">
+            <div class="uk-form-row">
+                <label class="uk-form-label" for="title">题目</label>
+                <input class="uk-width-1-1 uk-form-large" type="text" id="title" name="title">
+                <input type="hidden" name="content" id="content"></textarea>
+            </div>
+            <div class="uk-form-row">
+                <label class="uk-form-label" for="category">分类</label>
+                <input class="uk-width-1-1 uk-form-large" type="text" id="category" name="category" placeholder="输入分类(可以为空)">
+                <input type="hidden" value="{{ request.session.get_csrf_token() }}" name="_csrf">
+            </div>
+            <div class="uk-form-row">
+                <button class="uk-width-1-1 uk-button uk-button-primary uk-button-large" id="id_confirm" type="submit">
+                确认发布
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock main %}
+
+{% block extend_foot %}
+<script src="{{ request.static_url('wf_blog:static/pen/markdown.js') }}"></script>
+<script src="{{ request.static_url('wf_blog:static/pen/pen.js') }}"></script>
+<script type="text/javascript">
+  // config
+  var options = {
+    editor: document.querySelector('[data-toggle="pen"]'),
+    debug: true
+  };
+
+  // create editor
+  var pen = new Pen(options);
+
+
+  // toggle editor mode
+  document.querySelector('#mode').addEventListener('click', function() {
+    var text = this.textContent;
+
+    if(this.classList.contains('disabled')) {
+      this.classList.remove('disabled');
+      pen.rebuild();
+    } else {
+      this.classList.add('disabled');
+      pen.destroy();
+    }
+  });
+
+  // toggle editor mode
+  document.querySelector('#hinted').addEventListener('click', function() {
+    var pen = document.querySelector('.pen')
+
+    if(pen.classList.contains('hinted')) {
+      pen.classList.remove('hinted');
+      this.classList.add('disabled');
+    } else {
+      pen.classList.add('hinted');
+      this.classList.remove('disabled');
+    }
+  });
+
+  // 点击Publish完善信息 
+  $("#id_publish").click(function(){
+  	var title = $("#id_title").text();
+  	var content = $("#id_post_content").html();
+  	$("#title").val(title);
+  	$("#content").val(content);
+  	var modal = new $.UIkit.modal.Modal("#id_publish_modal");
+  	modal.show();
+  })
+
+  // 确认发布,提交表单
+  $("#id_confirm").click(function(e){
+  	e.preventDefault();
+  	var title = $("#title").val();
+  	if (!title){
+  		alert("题目怎么是空的呢？");
+  	} else {
+  		$("#id_post_form").submit();
+  	}
+  })
+</script>
+{% endblock extend_foot %}

@@ -37,12 +37,12 @@ class Post(object):
     """
     @staticmethod
     @safe_mongocall
-    def add_post(mongodb, title, content, category, image_url, add_time, add_user):
+    def add_post(mongodb, title, content, category, add_time=None, add_user=None):
         post = {
         'title': title,
         'content': content,
         'category': category,
-        'image_url': image_url,
+        # 'image_url': image_url,
         'add_time': datetime.now(),
         'add_user': 'wf'
         }
@@ -68,3 +68,18 @@ class Post(object):
     @safe_mongocall
     def get_post(mongodb, id):
         return mongodb['post'].find_one({'_id': ObjectId(id)})
+
+    @staticmethod
+    @safe_mongocall
+    def get_all_posts(mongodb):
+        return mongodb['post'].find()  # TODO: 加排序
+
+        
+class RootFactory(object):
+    __acl__ = [
+        (Allow, Everyone, 'view'),
+        (Allow, Authenticated, 'admin')
+    ]
+
+    def __init__(self, request):
+        pass

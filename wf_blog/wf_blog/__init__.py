@@ -4,34 +4,49 @@ import pymongo
 from pyramid.config import Configurator
 from pyramid.events import subscriber
 from pyramid.events import NewRequest
+from pyramid.request import Request
+
+from pyramid.authentication import AuthTktAuthenticationPolicy
+from pyramid.authorization import ACLAuthorizationPolicy
+from wf_blog.security import groupfinder
+from wf_blog.model import User, RootFactory
 
 from wf_blog import routers
+
+from pyramid.threadlocal import get_current_registry
+from pyramid.decorator import reify
+from pyramid.request import Request
+from pyramid.security import unauthenticated_userid
+class RequestWithUserAttribute(Request):
+    @reify
+    def user(self):
+        userid = unauthenticated_userid(self)
+        if userid is not None:
+            settings = get_current_registry().settings
+            user = User.get_user(self.mongodb, userid)
+            print user
+            return user
 
 def main(global_config, **settings):
     """ This function returns a WSGI application.
     """
-    from pyramid_beaker import session_factory_from_settings
-    from pyramid_beaker import set_cache_regions_from_settings
     # auth
-    from pyramid.authentication import SessionAuthenticationPolicy
-    from pyramid.authorization import ACLAuthorizationPolicy
-    from wf_blog.auth import auth
-    settings = dict(settings)
-    settings.setdefault('jinja2.i18n.domain', 'wf_blog')
-    set_cache_regions_from_settings(settings)
-    session_factory = session_factory_from_settings(settings)
+    authn_policy = AuthTktAuthenticationPolicy(settings['security'], callback=groupfinder)
+    authz_policy = ACLAuthorizationPolicy()
 
-    config = Configurator(session_factory=session_factory,
-                          authentication_policy=SessionAuthenticationPolicy(prefix='auth', callback=auth),
-                          authorization_policy=ACLAuthorizationPolicy(),
-                          settings=settings
-                          )
+    config = Configurator(settings=settings, root_factory=RootFactory)
+
+    config.set_authentication_policy(authn_policy)
+    config.set_authorization_policy(authz_policy)
 
     # jinja2
     from pyramid_jinja2 import renderer_factory
     config.include('pyramid_jinja2')
     config.add_renderer('.html', renderer_factory)
     config.add_static_view('static', 'wf_blog:static', cache_max_age=3600)
+
+    # bind user to request
+    config.set_request_factory(RequestWithUserAttribute)
 
     # set routers and views
     routers.includeme(config)
