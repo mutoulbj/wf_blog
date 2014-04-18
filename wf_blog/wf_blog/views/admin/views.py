@@ -10,9 +10,10 @@ from wf_blog.helper import login_required
 from wf_blog.model import Post
 
 class HomeView(Root):
-    @view_config(renderer='index.html', route_name='index')
+    @view_config(renderer='index.html', route_name='index', permission='view')
     def index(self):
-        return {}
+        posts = Post.get_all_posts(self.request.mongodb)
+        return {'posts': posts}
 
 
 

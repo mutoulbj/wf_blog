@@ -72,7 +72,17 @@ class Post(object):
     @staticmethod
     @safe_mongocall
     def get_all_posts(mongodb):
-        return mongodb['post'].find()  # TODO: 加排序
+        return mongodb['post'].find().sort([('add_time', -1)])
+
+    @staticmethod
+    @safe_mongocall
+    def get_last_posts(mongodb, add_time):
+        return mongodb['post'].find({'add_time': {'$lt': add_time}}).sort([('add_time', -1)])
+    
+    @staticmethod
+    @safe_mongocall
+    def get_next_posts(mongodb, add_time):
+        return mongodb['post'].find({'add_time': {'$gt': add_time}}).sort([('add_time', 1)])
 
         
 class RootFactory(object):

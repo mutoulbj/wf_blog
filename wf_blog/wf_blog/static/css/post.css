@@ -38,7 +38,7 @@
 		line-height: 44px;
 		display: inline-block;
 		white-space: nowrap;
-		float: right;
+		/*float: right;*/
 	}
 	.distraction-free-component {
 		-webkit-transition: opacity .3s linear;
@@ -82,3 +82,13 @@
 		-moz-border-radius: 999em;
 		border-radius: 999em;
 		}
+		.pen blockquote {
+			padding-left: 10px;
+			margin-left: -14px;
+			border-left: 4px solid #1abf89;
+			}
+		blockquote {
+			padding-left: 10px;
+			margin-left: -14px;
+			border-left: 4px solid #1abf89;
+			}

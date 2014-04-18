@@ -20,4 +20,14 @@
             {{ post.content|safe }}
         </div>
     </div>
+    {% if last %}
+    <div class="btn-set distraction-free-component" style="float: left; margin-left: 10%;">
+        <a class="btn btn-primary btn-publish" title="Last One" href="/post/detail/{{ last._id }}" >上一篇</a>
+    </div>
+    {% endif %}
+    {% if next %}
+    <div class="btn-set distraction-free-component" style="float: right; margin-right: 10%;">
+        <a class="btn btn-primary btn-publish" title="Next One" href="/post/detail/{{ next._id }}">下一篇</a>
+    </div>
+    {% endif %}
 {% endblock main %}

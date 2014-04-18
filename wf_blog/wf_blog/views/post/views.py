@@ -11,7 +11,12 @@ class PostView(Root):
     @view_config(renderer='/posts/detail.html', route_name='post_detail')
     def post_detail(self):
         post = Post.get_post(self.request.mongodb, str(self.request.matchdict['id']))
-        return {'post': post}
+        last = list(Post.get_last_posts(self.request.mongodb, post['add_time']))
+        next = list(Post.get_next_posts(self.request.mongodb, post['add_time']))
+        last = last[0] if last else None
+        next = next[0] if next else None
+
+        return {'post': post, 'next': next, 'last': last}
 
     @view_config(renderer='/posts/new_post.html', route_name='new_post', permission='admin', decorator=login_required)
     def new_post(self):
