@@ -42,3 +42,10 @@ class PostView(Root):
                 return HTTPFound('/admin/all_posts')  # TODO: 跳转到详细页
         post = Post.get_post(self.request.mongodb, str(tid))
         return {'post': post}
+
+    @view_config(renderer='string', route_name='post_delete', permission='admin', decorator=login_required)
+    def post_delete(self):
+        tid = self.request.matchdict['id']
+        if self.request.method == 'POST':
+            Post.del_post(self.request.mongodb, tid)
+            return HTTPFound('/admin/all_posts')

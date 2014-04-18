@@ -20,16 +20,57 @@
 			<td>{{ p.add_time.strftime('%Y-%m-%d %H:%M:%S') }}</td>
 			<td>
 				<a href="/post/edit/{{ p._id }}" class="uk-button uk-button-primary">修改</a>
-				<button type="" class="uk-button uk-button-danger">删除</button>
+				<button class="uk-button uk-button-danger del_post" 
+				data-post-id="{{ p._id }}" data-post-title="{{ p.title }}">删除</button>
 			</td>
 		</tr>
 		{% endfor %}
 	</tbody>
 	</table>
+	<div id="id_confirm_modal" class="uk-modal">
+	    <div class="uk-modal-dialog">
+	        <a class="uk-modal-close uk-close"></a>
+	        <h1>危险操作,删除了就真的没了</h1>
+	        <form method="post" action="" class="uk-panel uk-panel-box uk-form" id="id_post_form">
+	            <div class="uk-form-row">
+	                <label class="uk-form-label" for="title">输入要删除的文章题目</label>
+	                <input class="uk-width-1-1 uk-form-large" type="text" id="title" name="title" data-origin-title="">
+	                <input type="hidden" value="{{ request.session.get_csrf_token() }}" name="_csrf">
+	            </div>
+	            <div class="uk-form-row">
+	                <button class="uk-width-1-1 uk-button uk-button-danger uk-button-large" id="id_confirm" type="submit">
+	                确认删除
+	                </button>
+	            </div>
+	        </form>
+	    </div>
+    </div>
 {% endblock right_content %}
 
 {% block extend_foot %}
 	<script type="text/javascript">
+	    // 点击Publish完善信息 
+        $(".del_post").click(function(){
+            var modal = new $.UIkit.modal.Modal("#id_confirm_modal");
+            modal.show();
+            var origin_title = $(this).data('post-title');
+            var tid = $(this).data('post-id');
+            $("#title").data("origin-title", origin_title);
+            $("#id_confirm").attr('disabled', true);
+            $("form#id_post_form").attr("action", "/post/delete/"+tid);
+        })
+
+        // 监听文章题目输入
+        $("#title").get(0).addEventListener('input', function (){
+        	var this_input = $(this);
+        	if ($("#title").data("origin-title") == this_input.val()){
+        		$("#id_confirm").attr('disabled', false);
+        	} else{
+        		$("#id_confirm").attr('disabled', true);
+        	}
+        }, false)
+        
+
 	    $(document).ready(function(){
 	    	$("#admin_all").addClass("uk-active");
 	    })
