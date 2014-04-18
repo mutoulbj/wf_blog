@@ -16,4 +16,4 @@ def admin_include(config):
 def post_include(config):
     config.add_route('new_post', '/new_post')
     config.add_route('post_detail', '/detail/{id}')
-    config.add_route('post_action', '/add/{action}')
+    config.add_route('post_edit', '/edit/{id}')

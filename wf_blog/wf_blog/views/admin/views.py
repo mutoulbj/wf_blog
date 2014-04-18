@@ -36,7 +36,7 @@ class AdminView(Root):
         return {}
 
 
-    @view_config(renderer='/admin/all_posts.html', route_name='all_posts', permission='admin')
+    @view_config(renderer='/admin/all_posts.html', route_name='all_posts', decorator=login_required)
     def all_posts(self):
         results = list(Post.get_all_posts(self.request.mongodb))
         return {'results': results}

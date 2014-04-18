@@ -51,10 +51,10 @@ class Post(object):
 
     @staticmethod
     @safe_mongocall
-    def update_post(mongodb, id, title, content, category, image_url):
+    def update_post(mongodb, id, title, content, category):
         mongodb['post'].update(
         {'_id': ObjectId(id)},
-        {'$set': {'title': title, 'content': content, 'category': category, 'image_url': inage_url}}
+        {'$set': {'title': title, 'content': content, 'category': category, }}
         )
 
 

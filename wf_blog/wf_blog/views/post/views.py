@@ -27,3 +27,18 @@ class PostView(Root):
         	else:
         		return {'error': 'error'}
         return {}
+
+    @view_config(renderer='/posts/edit.html', route_name='post_edit', permission='admin', decorator=login_required)
+    def post_edit(self):
+        tid = self.request.matchdict['id']
+        if self.request.method == 'POST':
+            title = self.request.POST['title']
+            content = self.request.POST['content']
+            category = self.request.POST['category']
+            if not category:
+                category = u"未分类"
+            if title and content:
+                Post.update_post(self.request.mongodb, str(tid), title, content, category)
+                return HTTPFound('/admin/all_posts')  # TODO: 跳转到详细页
+        post = Post.get_post(self.request.mongodb, str(tid))
+        return {'post': post}
