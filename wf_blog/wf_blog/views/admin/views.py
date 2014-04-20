@@ -29,13 +29,17 @@ class AdminView(Root):
 
             if admin_user.validate_user(password):
                 headers = remember(self.request, username)
-                return HTTPFound('/', headers=headers)
+                return HTTPFound('/admin/all_posts', headers=headers)
             else:
                 headers = forget(self.request)
                 message = u"用户名或密码错误"
                 return {'message': message}
         return {}
 
+    @view_config(renderer='string', route_name='logout', permission='admin')
+    def logout(self):
+        headers = forget(self.request)
+        return HTTPFound('/', headers=headers)
 
     @view_config(renderer='/admin/all_posts.html', route_name='all_posts', decorator=login_required)
     def all_posts(self):

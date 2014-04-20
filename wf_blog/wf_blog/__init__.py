@@ -24,7 +24,6 @@ class RequestWithUserAttribute(Request):
         if userid is not None:
             settings = get_current_registry().settings
             user = User.get_user(self.mongodb, userid)
-            print user
             return user
 
 def main(global_config, **settings):

@@ -19,6 +19,10 @@
             </div>
             {{ post.content|safe }}
         </div>
+        <!-- 多说评论框 start -->
+        <div class="ds-thread" data-thread-key="{{ post._id }}" data-title="{{ post.title }}" 
+        data-url="/post/detail/{{ post._id }}"></div>
+        <!-- 多说评论框 end -->
     </div>
     {% if last %}
     <div class="btn-set distraction-free-component" style="float: left; margin-left: 10%;">
@@ -31,3 +35,19 @@
     </div>
     {% endif %}
 {% endblock main %}
+
+{% block extend_foot %}
+<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+    var duoshuoQuery = {short_name:"wufanflora"};
+    (function() {
+        var ds = document.createElement('script');
+        ds.type = 'text/javascript';ds.async = true;
+        ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+        ds.charset = 'UTF-8';
+        (document.getElementsByTagName('head')[0] 
+         || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+    </script>
+<!-- 多说公共JS代码 end -->
+{% endblock extend_foot %}
