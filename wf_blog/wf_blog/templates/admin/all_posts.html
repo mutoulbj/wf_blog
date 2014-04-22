@@ -35,7 +35,7 @@
 	            <div class="uk-form-row">
 	                <label class="uk-form-label" for="title">输入要删除的文章题目</label>
 	                <input class="uk-width-1-1 uk-form-large" type="text" id="title" name="title" data-origin-title="">
-	                <input type="hidden" value="{{ request.session.get_csrf_token() }}" name="_csrf">
+	                <input type="hidden" value="{{ request.session.get_csrf_token() }}" name="csrf_token">
 	            </div>
 	            <div class="uk-form-row">
 	                <button class="uk-width-1-1 uk-button uk-button-danger uk-button-large" id="id_confirm" type="submit">

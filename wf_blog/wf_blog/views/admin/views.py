@@ -3,6 +3,7 @@ from pyramid.view import view_config
 from pyramid.httpexceptions import HTTPFound, HTTPForbidden
 from pyramid.response import Response
 from pyramid.security import remember, forget
+from pyramid.session import check_csrf_token
 
 from wf_blog.views.admin.user_admin import UserAdmin
 from wf_blog.resources import Root
@@ -23,6 +24,7 @@ class AdminView(Root):
     @view_config(renderer='/admin/login.html', route_name='login', permission='view')
     def login(self):
         if self.request.method == 'POST':
+            check_csrf_token(self.request)
             username = self.request.POST['username']
             password = self.request.POST['password']
             admin_user = UserAdmin(username, self.request)

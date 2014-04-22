@@ -38,7 +38,7 @@
                 <label class="uk-form-label" for="category">分类</label>
                 <input class="uk-width-1-1 uk-form-large" type="text" 
                 value="{% if post.category != '未分类' %}{{ post.category }}{% endif %}" id="category" name="category" placeholder="输入分类(可以为空)">
-                <input type="hidden" value="{{ request.session.get_csrf_token() }}" name="_csrf">
+                <input type="hidden" value="{{ request.session.get_csrf_token() }}" name="csrf_token">
             </div>
             <div class="uk-form-row">
                 <button class="uk-width-1-1 uk-button uk-button-primary uk-button-large" id="id_confirm" type="submit">

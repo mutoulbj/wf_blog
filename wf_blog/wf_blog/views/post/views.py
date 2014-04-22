@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from pyramid.view import view_config
 from pyramid.httpexceptions import HTTPFound, HTTPForbidden
+from pyramid.session import check_csrf_token
 
 from wf_blog.resources import Root
 from wf_blog.helper import login_required
@@ -21,22 +22,24 @@ class PostView(Root):
     @view_config(renderer='/posts/new_post.html', route_name='new_post', permission='admin', decorator=login_required)
     def new_post(self):
         if self.request.method == 'POST':
-        	title = self.request.POST['title']
-        	content = self.request.POST['content']
-        	category = self.request.POST['category']
-        	if not category:
-        		category = u"未分类"
-        	if title and content:
-        		Post.add_post(self.request.mongodb, title, content, category)
-        		return HTTPFound('/admin/all_posts')  # TODO: 跳转到详细页
-        	else:
-        		return {'error': 'error'}
+            check_csrf_token(self.request)   # 检查csrf
+            title = self.request.POST['title']
+            content = self.request.POST['content']
+            category = self.request.POST['category']
+            if not category:
+                category = u"未分类"
+            if title and content:
+                Post.add_post(self.request.mongodb, title, content, category)
+                return HTTPFound('/admin/all_posts')  # TODO: 跳转到详细页
+            else:
+                return {'error': 'error'}
         return {}
 
     @view_config(renderer='/posts/edit.html', route_name='post_edit', permission='admin', decorator=login_required)
     def post_edit(self):
         tid = self.request.matchdict['id']
         if self.request.method == 'POST':
+            check_csrf_token(self.request)
             title = self.request.POST['title']
             content = self.request.POST['content']
             category = self.request.POST['category']
@@ -52,5 +55,6 @@ class PostView(Root):
     def post_delete(self):
         tid = self.request.matchdict['id']
         if self.request.method == 'POST':
+            check_csrf_token(self.request)
             Post.del_post(self.request.mongodb, tid)
             return HTTPFound('/admin/all_posts')
