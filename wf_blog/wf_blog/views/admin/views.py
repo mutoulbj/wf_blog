@@ -16,6 +16,9 @@ class HomeView(Root):
         posts = Post.get_all_posts(self.request.mongodb)
         return {'posts': posts}
 
+    @view_config(renderer='firework.html', route_name='firework', permission='view')
+    def firework(self):
+        return {}
 
 
 

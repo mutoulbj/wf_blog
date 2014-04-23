@@ -4,6 +4,7 @@ def includeme(config):
     config.add_route('index', '')
     config.include(admin_include, '/admin')
     config.include(post_include, '/post')
+    config.add_route('firework', '/firework')
 
 
 def admin_include(config):
