@@ -229,6 +229,9 @@ FireworkDisplay = {
         
         this.addFireworks();
         $('#form').fadeOut('slow');
+        // 播放烟火音效
+        audio = document.getElementsByTagName("audio")[0];
+        audio.play();
     },
     launchFirework : function(fw, dispersion, speed) {
         fw.dx = dispersion;

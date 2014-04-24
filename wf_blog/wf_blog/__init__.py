@@ -57,6 +57,7 @@ def main(global_config, **settings):
         url = settings['mongodb.url']
         db_name = settings['mongodb.db_name']
         db = settings['mongodb_conn'][db_name]
+        db.authenticate(settings['mongodb.db_user'], settings['mongodb.passwd'])
         event.request.mongodb = db
     db_uri = settings['mongodb.url']
     MongoDB = pymongo.Connection
