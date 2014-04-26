@@ -41,6 +41,7 @@ def main(global_config, **settings):
     # jinja2
     from pyramid_jinja2 import renderer_factory
     config.include('pyramid_jinja2')
+    config.add_jinja2_search_path("templates")
     config.add_renderer('.html', renderer_factory)
     config.add_static_view('static', 'wf_blog:static', cache_max_age=3600)
 
