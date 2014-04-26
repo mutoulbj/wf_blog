@@ -17,6 +17,8 @@ from pyramid.threadlocal import get_current_registry
 from pyramid.decorator import reify
 from pyramid.request import Request
 from pyramid.security import unauthenticated_userid
+from pyramid_beaker import session_factory_from_settings
+
 class RequestWithUserAttribute(Request):
     @reify
     def user(self):
@@ -30,10 +32,13 @@ def main(global_config, **settings):
     """ This function returns a WSGI application.
     """
     # auth
+    settings = dict(settings)
+    settings.setdefault('jinja2.i18n.domain', 'wf_blog')
     authn_policy = AuthTktAuthenticationPolicy(settings['security'], callback=groupfinder)
     authz_policy = ACLAuthorizationPolicy()
 
-    config = Configurator(settings=settings, root_factory=RootFactory)
+    session_factory = session_factory_from_settings(settings)
+    config = Configurator(session_factory=session_factory, settings=settings, root_factory=RootFactory)
 
     config.set_authentication_policy(authn_policy)
     config.set_authorization_policy(authz_policy)
