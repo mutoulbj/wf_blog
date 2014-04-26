@@ -3,7 +3,8 @@
 {% block title %}首页{% endblock title %}
 
 {% block extend_head %}
-    <link rel="stylesheet" href="{{ request.static_url('wf_blog:static/css/index.css') }}" type="text/css">
+    <!-- <link rel="stylesheet" href="{{ request.static_url('wf_blog:static/css/index.css') }}" type="text/css"> -->
+    <link rel="stylesheet" href="http://wf-blog.qiniudn.com/index.css" type="text/css">
 {% endblock extend_head %}
 
 {% block main %}
@@ -13,10 +14,12 @@
     <div id="timeline_container">
     	<header>
     		<figure>
-    			<img src="{{ request.static_url('wf_blog:static/image/wf.jpg') }}"
+    			<!-- <img src="{{ request.static_url('wf_blog:static/image/wf.jpg') }}"
+                 title="巫小喵" alt="巫小喵" style="width: 300px"/> -->
+                 <img src="http://wf-blog.qiniudn.com/wf.jpg"
                  title="巫小喵" alt="巫小喵" style="width: 300px"/>
     		</figure>
-            <h1>吴凡 <br/> @巫小喵</h1>
+            <h1>Flora Wu <br/> @巫小喵</h1>
     	</header>
         <!-- timeline start -->
     	<ul>
@@ -41,5 +44,6 @@
 {% endblock main %}
 
 {% block extend_foot %}
-<script src="{{ request.static_url('wf_blog:static/js/index.js') }}"></script>
+<!-- <script src="{{ request.static_url('wf_blog:static/js/index.js') }}"></script> -->
+<script src="http://wf-blog.qiniudn.com/index.js"></script>
 {% endblock extend_foot %}

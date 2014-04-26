@@ -7,7 +7,8 @@
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
     <!-- Load Canvas support for IE8 and below (IE9 support Canvas) -->
     <!--[if lt IE 9]><script src="canvas/excanvas.js"></script><![endif]-->
-    <link type="text/css" href="{{ request.static_url('wf_blog:static/firework/fireworks.css') }}" rel="stylesheet">
+    <!-- <link type="text/css" href="{{ request.static_url('wf_blog:static/firework/fireworks.css') }}" rel="stylesheet"> -->
+    <link type="text/css" href="http://wf-blog.qiniudn.com/fireworks.css" rel="stylesheet">
 {% endblock extend_head %}
 
 {% block main %}
@@ -35,7 +36,7 @@
             </div>
             <div>
                 <span class="boxtext">是主人？</span><br/>
-                <a href='/admin/login' class="uk-button uk-button-primary">登录</a>
+                <a href='/admin/all_posts' class="uk-button uk-button-primary">控制台</a>
             </div>
             <div>
                 <span class="boxtext">游客？</span><br/>
@@ -56,9 +57,10 @@
 {% endblock main %}
 {% block extend_foot %}
        <!-- jQuery UI is only used for the nice slider controls -->
-    <script type="text/javascript" src="{{ request.static_url('wf_blog:static/firework/jquery-ui.js') }}"></script>
-    <!-- <script type="text/javascript" src="{{ request.static_url('wf_blog:static/firework/ui.slider.js') }}"></script> -->
+    <!-- <script type="text/javascript" src="{{ request.static_url('wf_blog:static/firework/jquery-ui.js') }}"></script> -->
+    <script type="text/javascript" src="http://wf-blog.qiniudn.com/jquery-ui.js"></script>
 
     <!-- Load the fireworks script and stylesheet -->
-    <script type="text/javascript" src="{{ request.static_url('wf_blog:static/firework/fireworks.js') }}"></script>
+    <!-- <script type="text/javascript" src="{{ request.static_url('wf_blog:static/firework/fireworks.js') }}"></script> -->
+    <script type="text/javascript" src="http://wf-blog.qiniudn.com/fireworks.js"></script>
 {% endblock extend_foot %}
