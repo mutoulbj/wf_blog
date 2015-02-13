@@ -1,4 +1,4 @@
 wf_blog
 =======
 
-Simple Blog For WF
+A simple blog program using Pyramid and mongodb.
