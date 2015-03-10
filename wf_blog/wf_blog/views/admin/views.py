@@ -20,6 +20,10 @@ class HomeView(Root):
     def firework(self):
         return {}
 
+    @view_config(renderer='baymax.html', route_name='baymax', permission='view')
+    def baymax(self):
+        return {}
+
 
 
 class AdminView(Root):

@@ -5,6 +5,7 @@ def includeme(config):
     config.include(admin_include, '/admin')
     config.include(post_include, '/post')
     config.add_route('firework', '/firework')
+    config.add_route('baymax', '/baymax')
 
 
 def admin_include(config):

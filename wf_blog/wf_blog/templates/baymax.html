@@ -1,8 +1,8 @@
-<!DOCTYPE html>
-<html>
-<head lang="en">
-    <meta charset="UTF-8">
-    <title></title>
+{% extends "/layout/base.html" %}
+
+{% block title %}Baymax{% endblock title %}
+
+{% block extend_head %}
     <style type="text/css">
         .cc, #baymax, #baymax .head, #baymax .head .mouth, #baymax .body, #baymax .body .chest, #baymax .body .chest i, #baymax .body .chest i:before, #baymax .body .belly {
             -moz-transform: translate(-50%, -50%);
@@ -491,9 +491,9 @@
             }
         }
     </style>
-</head>
-<body>
+{% endblock %}
 
+{% block main %}
 <div id="baymax">
     <div class="head">
         <div class="left eye"></div>
@@ -515,5 +515,4 @@
     <div class="left leg"></div>
     <div class="right leg"></div>
 </div>
-</body>
-</html>
+{% endblock %}
